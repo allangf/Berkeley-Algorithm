@@ -75,10 +75,6 @@ class Configuration:
         self.__hosts.remove(host)
 
 
-def master():
-    pass
-
-
 def main(argv):
     conf = Configuration()
 
@@ -108,22 +104,30 @@ def main(argv):
     if (conf.get_mode() in '-m'):
         logger.info(conf.get_ip() + ':' + conf.get_port() + ' MODE: Master')
         # starting master
+        conf.read_hosts('clients.txt')
+        hosts = conf.get_hosts()
         while True:
-            conf.read_hosts('clients.txt')
-            hosts = conf.get_hosts()
-            msg = input("COMMAND_: ")
+            # wait end show logs
+            time.sleep(1)
+            msg = raw_input("command_: ")
             for host in hosts:
                 host = host.split(':')
                 masterSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 try:
                     ip   = host[0]
                     port = host[1]
-                    masterSock.sendto(msg, (ip, port))
-                    data = masterSock.recvfrom(1024)
-                    print data
                 except IndexError:
                     pass
+                #REMOVER
+                print port
+                masterSock.sendto(str(msg), (ip, int(port)))
+                data, addr = masterSock.recvfrom(1024)
+                # REMOVER DO CODIGO
+                print 'answer:'
+                print data
                 masterSock.close()
+                if 'quit' in msg:
+                    sys.exit(0)
 
     if (conf.get_mode() in '-s'):
         logger.info(conf.get_ip() + ':' + conf.get_port() + ' MODE: Slave')
@@ -132,8 +136,6 @@ def main(argv):
         slaveSock.bind(('0.0.0.0', int(conf.get_port())))
         while True:
             data, addr = slaveSock.recvfrom(1024)
-            print data
-            print addr
             if 'quit' in data:
                 slaveSock.close()
                 sys.exit(0)
@@ -154,4 +156,3 @@ if __name__ == '__main__':
     #sys.argv.append('logfile=clock.log')
 
     main(sys.argv)
-
