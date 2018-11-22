@@ -5,6 +5,7 @@
 
 import sys
 import socket
+import logging
 import time
 
 class Configuration:
@@ -57,25 +58,36 @@ class Configuration:
 def master(self):
     pass
 
-def client(self, msg, ip, port):
-    print "UDP target IP:", ip
-    print "UDP target port:", port()
-    print "message:", msg
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.sendto(msg, (ip, port))
+def slave(self):
+    pass
 
 
 def main(argv):
     conf = Configuration()
-    time = time.strftime('%X %x')
-    #server("test", conf.get_ip(), conf.get_port())
+
+    # create logger
+    logger = logging.getLogger('clock-log')
+    logger.setLevel(logging.DEBUG)
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    logger.info('Starting' + conf.get_ip() + ':' + conf.get_port())
+
+    if (conf.get_mode() in '-m'):
+        logger.info( conf.get_ip() + ' MODE: Master')
+        master()
+        conf.read_hosts('clients.txt')
+    if (conf.get_mode() in '-s'):
+        logger.info(conf.get_ip() + ' MODE: Slave')
+        slave()
 
 
-if __name__ == "__main__":
-    '''
-        Reconhecer entrada, -m master, -s slave
-    '''
+if __name__
+    "__main__":
+
     sys.argv.append('-m')
     sys.argv.append('port=7000')
     sys.argv.append('ip=10.0.0.1')
