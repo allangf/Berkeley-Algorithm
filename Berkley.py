@@ -67,13 +67,27 @@ def slave():
 def main(argv):
     conf = Configuration()
 
-    logger = logging.getLogger('clock.log')
+    # create logging
+    logger = logging.getLogger('clock')
     logger.setLevel(logging.DEBUG)
+
+    # create file
+    fh = logging.FileHandler('clock.log')
+    fh.setLevel(logging.DEBUG)
+
+    # create on screen
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
+
+    # create formatter
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
     ch.setFormatter(formatter)
+
+    # create handler
+    logger.addHandler(fh)
     logger.addHandler(ch)
+
     logger.info(conf.get_ip() + ':' + conf.get_port() + ' STARTING')
 
     if (conf.get_mode() in '-m'):
