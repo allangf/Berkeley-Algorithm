@@ -79,10 +79,6 @@ def master():
     pass
 
 
-def slave():
-    pass
-
-
 def main(argv):
     conf = Configuration()
 
@@ -111,20 +107,38 @@ def main(argv):
 
     if (conf.get_mode() in '-m'):
         logger.info(conf.get_ip() + ':' + conf.get_port() + ' MODE: Master')
-        master()
-        conf.read_hosts('clients.txt')
-        hosts = conf.get_hosts()
-        for host in hosts:
-            host = host.split(':')
-            try:
-                ip   = host[0]
-                port = host[1]
-            except IndexError as ex:
-                pass
+        # starting master
+        while True:
+            conf.read_hosts('clients.txt')
+            hosts = conf.get_hosts()
+            msg = input("COMMAND_: ")
+            for host in hosts:
+                host = host.split(':')
+                masterSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                try:
+                    ip   = host[0]
+                    port = host[1]
+                    masterSock.sendto(msg, (ip, port))
+                    data = masterSock.recvfrom(1024)
+                    print data
+                except IndexError:
+                    pass
+                masterSock.close()
+
     if (conf.get_mode() in '-s'):
         logger.info(conf.get_ip() + ':' + conf.get_port() + ' MODE: Slave')
-        slave()
-
+        # starting slave
+        slaveSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        slaveSock.bind(('0.0.0.0', int(conf.get_port())))
+        while True:
+            data, addr = slaveSock.recvfrom(1024)
+            print data
+            print addr
+            if 'quit' in data:
+                slaveSock.close()
+                sys.exit(0)
+            if 'get_time' in data:
+                slaveSock.sendto(conf.get_time(), addr)
 
 if __name__ == '__main__':
 
@@ -132,12 +146,12 @@ if __name__ == '__main__':
     REMOVE BEFORE FLY
     
     '''
-    sys.argv.append('-m')
-    sys.argv.append('port=6999')
-    sys.argv.append('ip=127.0.0.1')
-    sys.argv.append('time=2:20:15')
-    sys.argv.append('d=5')
-    sys.argv.append('logfile=clock.log')
+    #sys.argv.append('-m')
+    #sys.argv.append('port=6999')
+    #sys.argv.append('ip=127.0.0.1')
+    #sys.argv.append('time=2:20:15')
+    #sys.argv.append('d=5')
+    #sys.argv.append('logfile=clock.log')
 
     main(sys.argv)
 
