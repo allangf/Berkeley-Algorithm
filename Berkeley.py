@@ -20,10 +20,12 @@ class Configuration:
                 conf[arg[0]] = arg[1]
             except IndexError:
                 pass
-        self.__ip   = conf.get("ip")
-        self.__port = conf.get("port")
-        self.__time = conf.get("time")
-        self.__hosts = []
+        self.__ip      = conf.get("ip")
+        self.__port    = conf.get("port")
+        self.__time    = conf.get("time")
+        self.__delta   = conf.get("d")
+        self.__logfile = conf.get("logfile")
+        self.__hosts   = []
 
 
     def get_mode(self):
@@ -44,6 +46,15 @@ class Configuration:
 
     def set_time(self, time):
         self.__time = time
+
+
+    def get_delta(self):
+        return self.__delta
+
+
+    def get_logfile(self):
+        return self.__logfile
+
 
     def read_hosts(self, file):
         hosts = open(file).read()
@@ -80,7 +91,7 @@ def main(argv):
     logger.setLevel(logging.DEBUG)
 
     # create file
-    fh = logging.FileHandler('clock.log')
+    fh = logging.FileHandler(conf.get_logfile())
     fh.setLevel(logging.DEBUG)
 
     # create on screen
@@ -125,6 +136,8 @@ if __name__ == '__main__':
     sys.argv.append('port=6999')
     sys.argv.append('ip=127.0.0.1')
     sys.argv.append('time=2:20:15')
+    sys.argv.append('d=5')
+    sys.argv.append('logfile=clock.log')
 
     main(sys.argv)
 

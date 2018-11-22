@@ -10,7 +10,7 @@ echo "Slave 3.........Starting"
 python Berkeley.py -s ip=127.0.0.1 port=7003 time=2:23:19
 
 echo "Master..........Starting"
-python Berkeley.py -m ip=127.0.0.1 port=6999 time=2:26:55
+python Berkeley.py -m ip=127.0.0.1 port=6999 time=2:26:55 logfile=clock.log d=5
 
  
 
