@@ -22,6 +22,7 @@ class Configuration:
                 pass
         self.__ip   = conf.get("ip")
         self.__port = conf.get("port")
+        self.__time = conf.get("time")
         self.__hosts = []
 
 
@@ -36,6 +37,13 @@ class Configuration:
     def get_port(self):
         return self.__port
 
+
+    def get_time(self):
+        return self.__time
+
+
+    def set_time(self, time):
+        self.__time = time
 
     def read_hosts(self, file):
         hosts = open(file).read()
@@ -80,7 +88,7 @@ def main(argv):
     ch.setLevel(logging.DEBUG)
 
     # create formatter
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter('%(asctime)s | %(name)s - %(levelname)s - Berkeley: ' + conf.get_time() + ' - %(message)s')
     fh.setFormatter(formatter)
     ch.setFormatter(formatter)
 
@@ -109,8 +117,14 @@ def main(argv):
 
 if __name__ == '__main__':
 
+    '''
+    REMOVE BEFORE FLY
+    
+    '''
     sys.argv.append('-m')
     sys.argv.append('port=6999')
     sys.argv.append('ip=127.0.0.1')
+    sys.argv.append('time=2:20:15')
+
     main(sys.argv)
 
