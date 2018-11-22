@@ -39,12 +39,13 @@ class Configuration:
 
     def read_hosts(self, file):
         hosts = open(file).read()
+        hosts = hosts.split('\n')
         for host in hosts:
-            self.__hosts.append(host)
+            self.add_host(host)
 
 
     def get_hosts(self):
-        return  self.__hosts
+        return self.__hosts
 
 
     def add_host(self, host):
@@ -55,40 +56,47 @@ class Configuration:
         self.__hosts.remove(host)
 
 
-def master(self):
+def master():
     pass
 
 
-def slave(self):
+def slave():
     pass
 
 
 def main(argv):
     conf = Configuration()
 
-    # create logger
-    logger = logging.getLogger('clock-log')
+    logger = logging.getLogger('clock.log')
     logger.setLevel(logging.DEBUG)
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
     logger.addHandler(ch)
-    logger.info('Starting' + conf.get_ip() + ':' + conf.get_port())
+    logger.info(conf.get_ip() + ':' + conf.get_port() + ' STARTING')
 
     if (conf.get_mode() in '-m'):
-        logger.info( conf.get_ip() + ' MODE: Master')
+        logger.info(conf.get_ip() + ':' + conf.get_port() + ' MODE: Master')
         master()
         conf.read_hosts('clients.txt')
+        hosts = conf.get_hosts()
+        for host in hosts:
+            host = host.split(':')
+            try:
+                ip   = host[0]
+                port = host[1]
+            except IndexError as ex:
+                pass
     if (conf.get_mode() in '-s'):
-        logger.info(conf.get_ip() + ' MODE: Slave')
+        logger.info(conf.get_ip() + ':' + conf.get_port() + ' MODE: Slave')
         slave()
 
 
-if __name__
-    "__main__":
+if __name__ == '__main__':
 
     sys.argv.append('-m')
-    sys.argv.append('port=7000')
-    sys.argv.append('ip=10.0.0.1')
+    sys.argv.append('port=6999')
+    sys.argv.append('ip=127.0.0.1')
     main(sys.argv)
+
