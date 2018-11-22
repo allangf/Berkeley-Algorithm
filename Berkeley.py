@@ -75,6 +75,24 @@ class Configuration:
         self.__hosts.remove(host)
 
 
+def tostamp(time):
+    time = time.split(':')
+    try:
+        hour = int(time[2]) * 3600
+        min = int(time[1]) * 60
+        sec = int(time[0])
+    except Exception:
+        pass
+    return int(hour + min + sec)
+
+
+def totime(stamp):
+    hour = int((stamp % 3600) % 60)
+    min = int(stamp % 3600) / 60
+    sec = int(stamp / 3600)
+    return str(hour) + ':' + str(min) + ':' + str(sec)
+
+
 def main(argv):
     conf = Configuration()
 
@@ -106,6 +124,7 @@ def main(argv):
         # starting master
         conf.read_hosts('clients.txt')
         hosts = conf.get_hosts()
+
         while True:
             # wait end show logs
             time.sleep(1)
@@ -125,6 +144,11 @@ def main(argv):
                 # REMOVER DO CODIGO
                 print 'answer:'
                 print data
+                x = tostamp(data)
+                print x
+                y = totime(x)
+                print y
+
                 masterSock.close()
                 if 'quit' in msg:
                     sys.exit(0)
@@ -132,15 +156,16 @@ def main(argv):
     if (conf.get_mode() in '-s'):
         logger.info(conf.get_ip() + ':' + conf.get_port() + ' MODE: Slave')
         # starting slave
-        slaveSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        slaveSock.bind(('0.0.0.0', int(conf.get_port())))
         while True:
+            slaveSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            slaveSock.bind(('0.0.0.0', int(conf.get_port())))
             data, addr = slaveSock.recvfrom(1024)
             if 'quit' in data:
                 slaveSock.close()
                 sys.exit(0)
             if 'get_time' in data:
                 slaveSock.sendto(conf.get_time(), addr)
+            slaveSock.close()
 
 if __name__ == '__main__':
 

@@ -1,0 +1,16 @@
+2018-11-22 16:12:33,379 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 STARTING
+2018-11-22 16:12:33,379 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 STARTING
+2018-11-22 16:12:33,380 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 MODE: Master
+2018-11-22 16:12:33,380 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 MODE: Slave
+2018-11-22 16:14:41,603 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 STARTING
+2018-11-22 16:14:41,603 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 STARTING
+2018-11-22 16:14:41,603 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 MODE: Master
+2018-11-22 16:14:41,603 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 MODE: Slave
+2018-11-22 16:14:48,557 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 STARTING
+2018-11-22 16:14:48,558 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 STARTING
+2018-11-22 16:14:48,558 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 MODE: Master
+2018-11-22 16:14:48,558 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 MODE: Slave
+2018-11-22 16:31:29,728 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 STARTING
+2018-11-22 16:31:29,728 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 STARTING
+2018-11-22 16:31:29,728 | clock - INFO - Berkeley: 2:26:55 - 127.0.0.1:6999 MODE: Master
+2018-11-22 16:31:29,729 | clock - INFO - Berkeley: 2:20:15 - 127.0.0.1:7000 MODE: Slave
